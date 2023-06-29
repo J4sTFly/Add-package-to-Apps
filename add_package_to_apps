@@ -1,0 +1,71 @@
+#!/bin/bash
+
+showHelp()
+{
+echo "Appends selected package to applications list.
+Go to the directory, where .sh file of the package lies
+and pass it's name to a script arguments.
+
+Options:
+-h              Show this message;
+-c              Write custom comment;
+-t              Set Terminal=true;
+-i              Custom icon path;
+"
+}
+
+if [[ $# -eq 0  || ($1 == "-h") ]];
+    then
+        showHelp
+        exit 0
+fi
+
+
+fileExists()
+{
+    if [ -f "$(pwd)/${file}" ];
+        then
+            echo "$file exists."
+        else
+            echo "Specified file doesn't exist: $(pwd)/${file})"
+            exit 1
+    fi
+}
+
+writeToFile()
+{
+    echo "[Desktop Entry]" > "$fullpath"
+    echo "Name=${filename^}" >> "$fullpath"
+    echo "Comment=${comment}" >> "$fullpath"
+    echo "Exec=$(pwd)/${filename}" >> "$fullpath"
+
+    echo "Terminal=${terminal}" >> "$fullpath"
+    echo "Type=Application" >> "$fullpath"
+    echo "Icon=$iconPath" >> "$fullpath"
+}
+
+file="$1"
+filename="${1%.*}"
+
+terminal="false"
+comment="${filename}"
+
+fullpath="${HOME}/.local/share/applications/${filename}.desktop"
+iconPath=$(pwd)/${filename}.svg
+
+for ((i=2; i<=$#; i++)); do
+    case ${@: i:1} in
+    -c) comment=${@: ++i:1};;
+    -t) terminal="true";;
+    -i) iconPath="$(pwd)/${@: ++i:1}";;
+    esac
+done
+
+
+fileExists
+
+writeToFile
+
+echo "Successfully written."
+
+exit 0
