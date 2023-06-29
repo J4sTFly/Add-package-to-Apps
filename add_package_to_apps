@@ -37,8 +37,7 @@ writeToFile()
     echo "[Desktop Entry]" > "$fullpath"
     echo "Name=${filename^}" >> "$fullpath"
     echo "Comment=${comment}" >> "$fullpath"
-    echo "Exec=$(pwd)/${filename}" >> "$fullpath"
-
+    echo "Exec=$(pwd)/${file}" >> "$fullpath"
     echo "Terminal=${terminal}" >> "$fullpath"
     echo "Type=Application" >> "$fullpath"
     echo "Icon=$iconPath" >> "$fullpath"
