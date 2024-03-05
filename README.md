@@ -5,8 +5,8 @@ Usage:
 add_package_to_apps FILENAME [OPTIONS]
 
 Installation:
-- Download a repo.
-
+- Download a repo;
+- Create bin if not already exists and move the script there:
 > mkdir ~/bin
 > mv ./add_package_to_apps ~/bin
 
